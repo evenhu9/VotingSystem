@@ -360,7 +360,7 @@
                 if (response.ok) {
                     showMessage('登录成功!');
                     const principal = await apiFetch('/api/users/me');
-                    state.currentUser = principal.username;
+                    state.currentUser = principal.name;
                     state.roles = principal.authorities.map(a => a.authority);
                     document.getElementById('current-user').textContent = state.currentUser;
                     showView('app');
