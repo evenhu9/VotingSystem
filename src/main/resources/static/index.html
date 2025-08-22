@@ -182,14 +182,14 @@
                 voteCard.innerHTML =`
                     <div class="flex justify-between items-start">
                         <div>
-                            <h4 class="font-bold text-lg">\${vote.title}</h4>
-                            <p class="text-sm text-gray-600">\${vote.description || ''}</p>
-                            <p class="text-xs text-gray-500">创建者: \${vote.creator} | 票数: \${vote.voteCount}</p>
-                            <p class="text-xs text-gray-500">时间: \${new Date(vote.startTime).toLocaleString()} - \${new Date(vote.endTime).toLocaleString()}</p>
+                            <h4 class="font-bold text-lg">${vote.title}</h4>
+                            <p class="text-sm text-gray-600">${vote.description || ''}</p>
+                            <p class="text-xs text-gray-500">创建者: ${vote.creator} | 票数: ${vote.voteCount}</p>
+                            <p class="text-xs text-gray-500">时间: ${new Date(vote.startTime).toLocaleString()} - ${new Date(vote.endTime).toLocaleString()}</p>
                         </div>
                         <div class="flex space-x-2">
-                            <button class="btn btn-primary \${!isVotingActive || !state.currentUser ? 'opacity-50 cursor-not-allowed' : ''}" \${!isVotingActive || !state.currentUser ? 'disabled' : ''} onclick="castVote(\${vote.id})">投票</button>
-                            <button class="btn btn-secondary" onclick="shareVote(\${vote.id})">分享</button>
+                            <button class="btn btn-primary ${!isVotingActive || !state.currentUser ? 'opacity-50 cursor-not-allowed' : ''}" ${!isVotingActive || !state.currentUser ? 'disabled' : ''} onclick="castVote(${vote.id})">投票</button>
+                            <button class="btn btn-secondary" onclick="shareVote(${vote.id})">分享</button>
                         </div>
                     </div>
                 `;
@@ -204,11 +204,11 @@
                 const item = document.createElement('div');
                 item.className = 'flex justify-between items-center p-2 bg-white rounded';
                 item.innerHTML =`
-                    <span>\${vote.title} (ID: \${vote.id}, 票数: \${vote.voteCount})</span>
+                    <span>${vote.title} (ID: ${vote.id}, 票数: ${vote.voteCount})</span>
                     <div>
-                        <input type="number" value="\${vote.voteCount}" class="input-field w-20 mr-2" id="count-\${vote.id}">
-                        <button class="btn btn-primary text-xs" onclick="updateVoteCount(\${vote.id})">更新</button>
-                        <button class="btn btn-danger text-xs ml-2" onclick="cancelVote(\${vote.id})">撤销</button>
+                        <input type="number" value="${vote.voteCount}" class="input-field w-20 mr-2" id="count-${vote.id}">
+                        <button class="btn btn-primary text-xs" onclick="updateVoteCount(${vote.id})">更新</button>
+                        <button class="btn btn-danger text-xs ml-2" onclick="cancelVote(${vote.id})">撤销</button>
                     </div>
                 `;
                 list.appendChild(item);
@@ -222,11 +222,11 @@
                 const item = document.createElement('div');
                 item.className = 'flex justify-between items-center p-2 bg-white rounded';
                 item.innerHTML =`
-                    <span>\${user.username} (ID: \${user.id}) - \${user.enabled ? '已启用' : '已禁用'}</span>
+                    <span>${user.username} (ID: ${user.id}) - ${user.enabled ? '已启用' : '已禁用'}</span>
                     <div>
-                        \${user.enabled
-                            ? \`<button class="btn btn-danger text-xs" onclick="disableUser(\${user.id})">禁用</button>\`
-                            : \`<button class="btn btn-primary text-xs" onclick="enableUser(\${user.id})">启用</button>\`
+                        ${user.enabled
+                            ? `<button class="btn btn-danger text-xs" onclick="disableUser(${user.id})">禁用</button>`
+                            : `<button class="btn btn-primary text-xs" onclick="enableUser(${user.id})">启用</button>`
                         }
                     </div>
                 `;
