@@ -37,6 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 公共接口 (关键修改：添加了根路径"/")
                 .antMatchers("/", "/api/login", "/h2-console/**", "/index.html").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/votes/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/votes/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/votes/*/share").hasAnyRole("USER", "ADMIN")
                 // 用户接口
                 .antMatchers(HttpMethod.POST, "/api/votes/**").hasRole("USER")
                 // 管理员接口
@@ -57,7 +59,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler((req, res, auth) -> res.setStatus(200))
                 .permitAll()
                 .and()
-                // H2 console 允许 iframe
-                .headers().frameOptions().sameOrigin();
+                // 配置 HTTP Headers
+                .headers()
+                // 禁用浏览器缓存
+                .cacheControl().disable()
+                // 允许 H2 console 在 iframe 中加载
+                .frameOptions().sameOrigin();
     }
 }

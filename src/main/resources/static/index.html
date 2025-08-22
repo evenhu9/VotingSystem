@@ -168,18 +168,23 @@
         }
 
         // --- 渲染函数 ---
-        function renderVoteList(votes) {
-            const voteList = document.getElementById('vote-list');
-            voteList.innerHTML = '';
-            if (!votes || votes.length === 0) {
-                voteList.innerHTML = '<p>当前没有投票活动。</p>';
-                return;
-            }
-            votes.forEach(vote => {
-                const isVotingActive = new Date() > new Date(vote.startTime) && new Date() < new Date(vote.endTime);
-                const voteCard = document.createElement('div');
-                voteCard.className = 'p-4 border rounded-lg';
-                voteCard.innerHTML =`
+    function renderVoteList(votes) {
+        const voteList = document.getElementById('vote-list');
+        voteList.innerHTML = '';
+        if (!votes || votes.length === 0) {
+            voteList.innerHTML = '<p>当前没有投票活动。</p>';
+            return;
+        }
+        votes.forEach(vote => {
+            const isVotingActive = new Date() > new Date(vote.startTime) && new Date() < new Date(vote.endTime);
+
+            // 判断当前用户是否是可执行操作的角色 (USER或ADMIN), 而非游客
+            const isActionUser = state.currentUser && state.roles.includes('ROLE_USER');
+
+            const voteCard = document.createElement('div');
+            voteCard.className = 'p-4 border rounded-lg';
+            // 使用 isActionUser 变量来控制按钮的 disabled 状态和样式
+            voteCard.innerHTML =`
                     <div class="flex justify-between items-start">
                         <div>
                             <h4 class="font-bold text-lg">${vote.title}</h4>
@@ -188,14 +193,14 @@
                             <p class="text-xs text-gray-500">时间: ${new Date(vote.startTime).toLocaleString()} - ${new Date(vote.endTime).toLocaleString()}</p>
                         </div>
                         <div class="flex space-x-2">
-                            <button class="btn btn-primary ${!isVotingActive || !state.currentUser ? 'opacity-50 cursor-not-allowed' : ''}" ${!isVotingActive || !state.currentUser ? 'disabled' : ''} onclick="castVote(${vote.id})">投票</button>
-                            <button class="btn btn-secondary" onclick="shareVote(${vote.id})">分享</button>
+                            <button class="btn btn-primary ${!isVotingActive || !isActionUser ? 'opacity-50 cursor-not-allowed' : ''}" ${!isVotingActive || !isActionUser ? 'disabled' : ''} onclick="castVote(${vote.id})">投票</button>
+                            <button class="btn btn-secondary ${!isActionUser ? 'opacity-50 cursor-not-allowed' : ''}" ${!isActionUser ? 'disabled' : ''} onclick="shareVote(${vote.id})">分享</button>
                         </div>
                     </div>
                 `;
-                voteList.appendChild(voteCard);
-            });
-        }
+            voteList.appendChild(voteCard);
+        });
+    }
 
         function renderAdminVoteList(votes) {
             const list = document.getElementById('admin-vote-list');
