@@ -5,106 +5,219 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>用户投票系统</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <style>
+        :root {
+            --light-beige: #F5F5DC;
+            --light-green: #D4EDDA; /* A lighter, more pastel green */
+            --primary-green: #28a745;
+            --primary-green-darker: #218838;
+            --secondary-gray: #6c757d;
+            --secondary-gray-darker: #5a6268;
+            --danger-red: #dc3545;
+            --danger-red-darker: #c82333;
+            --text-color: #333;
+            --card-bg: #FFFFFF;
+            --input-border: #ced4da;
+        }
+
+        body {
+            background-color: var(--light-beige);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         .hidden { display: none; }
-        .card { @apply bg-white rounded-lg shadow-md p-6 mb-6; }
-        .btn { @apply text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline; }
-        .btn-primary { @apply bg-blue-500 hover:bg-blue-700; }
-        .btn-secondary { @apply bg-gray-500 hover:bg-gray-700; }
-        .btn-danger { @apply bg-red-500 hover:bg-red-700; }
-        .input-field { @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline; }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn {
+            font-weight: bold;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn i {
+            font-size: 1.1em;
+        }
+
+
+        .btn-primary {
+            background-color: var(--primary-green);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-green-darker);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-gray);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-gray-darker);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-red);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: var(--danger-red-darker);
+        }
+
+        .input-field {
+            box-shadow: none;
+            appearance: none;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            color: var(--text-color);
+            background-color: #f8f9fa;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.25);
+        }
+
+        h1 {
+            color: var(--primary-green-darker);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        #message-area {
+            border-left-width: 5px;
+        }
+
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="antialiased">
 
-<div class="container mx-auto p-4 max-w-4xl">
-    <h1 class="text-3xl font-bold text-center my-6 text-gray-800">用户投票系统</h1>
+<div class="container mx-auto p-4 max-w-5xl">
+    <div class="text-center my-8">
+        <i class="fas fa-vote-yea" style="font-size: 3rem; color: var(--primary-green);"></i>
+        <h1 class="text-4xl font-bold mt-2">用户投票系统</h1>
+    </div>
 
-    <!-- 消息通知区域 -->
-    <div id="message-area" class="p-4 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg hidden" role="alert"></div>
 
-    <!-- 登录视图 -->
+    <div id="message-area" class="p-4 mb-6 text-sm rounded-lg hidden" role="alert"></div>
+
     <div id="login-view" class="card">
-        <h2 class="text-2xl font-semibold mb-4">登录</h2>
+        <h2 class="text-2xl font-semibold mb-6 text-center">
+            <i class="fas fa-sign-in-alt mr-2"></i>登录
+        </h2>
         <form id="login-form">
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="username">用户名</label>
-                <input class="input-field" id="username" type="text">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                    <i class="fas fa-user mr-1"></i>用户名
+                </label>
+                <input class="input-field" id="username" type="text" placeholder="请输入您的用户名">
             </div>
             <div class="mb-6">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="password">密码</label>
-                <input class="input-field" id="password" type="password">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                    <i class="fas fa-lock mr-1"></i>密码
+                </label>
+                <input class="input-field" id="password" type="password" placeholder="请输入您的密码">
             </div>
-            <div class="flex items-center justify-between">
-                <button class="btn btn-primary" type="submit">
+            <div class="flex items-center justify-center">
+                <button class="btn btn-primary w-full" type="submit">
+                    <i class="fas fa-paper-plane"></i>
                     登 录
                 </button>
             </div>
         </form>
     </div>
 
-    <!-- 主应用视图 (登录后显示) -->
     <div id="app-view" class="hidden">
-        <div class="flex justify-between items-center mb-6">
-            <p class="text-lg">欢迎, <span id="current-user" class="font-bold"></span>!</p>
-            <button id="logout-btn" class="btn btn-secondary">退出登录</button>
+        <div class="flex justify-between items-center mb-6 bg-white p-4 rounded-lg shadow-sm">
+            <p class="text-lg">
+                <i class="fas fa-user-circle mr-2 text-gray-500"></i>欢迎, <span id="current-user" class="font-bold text-green-700"></span>!
+            </p>
+            <button id="logout-btn" class="btn btn-secondary">
+                <i class="fas fa-sign-out-alt"></i>退出登录
+            </button>
         </div>
 
-        <!-- 用户/游客投票区 -->
         <div id="vote-list-view" class="card">
-            <h2 class="text-2xl font-semibold mb-4">投票活动列表</h2>
+            <h2 class="text-2xl font-semibold mb-4 border-b pb-3">
+                <i class="fas fa-poll-h mr-2"></i>投票活动列表
+            </h2>
             <div id="vote-list" class="space-y-4">
-                <!-- 投票项将动态插入这里 -->
             </div>
         </div>
 
-        <!-- 管理员面板 -->
-        <div id="admin-panel" class="hidden card bg-gray-50 border border-gray-200">
-            <h2 class="text-2xl font-bold mb-4 text-gray-900">管理员面板</h2>
+        <div id="admin-panel" class="hidden card bg-green-50 border border-green-200">
+            <h2 class="text-2xl font-bold mb-6 text-gray-900 border-b-2 border-green-300 pb-3">
+                <i class="fas fa-user-shield mr-2"></i>管理员面板
+            </h2>
 
-            <!-- 创建投票 -->
-            <div class="mb-6">
-                <h3 class="text-xl font-semibold mb-3">创建新投票</h3>
-                <form id="create-vote-form" class="space-y-3">
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4"><i class="fas fa-plus-circle mr-2"></i>创建新投票</h3>
+                <form id="create-vote-form" class="space-y-4 p-4 bg-white rounded-lg">
                     <input id="vote-title" type="text" placeholder="投票标题" class="input-field" required>
                     <textarea id="vote-description" placeholder="投票描述" class="input-field"></textarea>
-                    <div>
-                        <label>开始时间:</label>
-                        <input id="vote-start-time" type="datetime-local" class="input-field" required>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="font-semibold">开始时间:</label>
+                            <input id="vote-start-time" type="datetime-local" class="input-field" required>
+                        </div>
+                        <div>
+                            <label class="font-semibold">结束时间:</label>
+                            <input id="vote-end-time" type="datetime-local" class="input-field" required>
+                        </div>
                     </div>
-                    <div>
-                        <label>结束时间:</label>
-                        <input id="vote-end-time" type="datetime-local" class="input-field" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">创建投票</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i>创建投票
+                    </button>
                 </form>
             </div>
-            <hr class="my-6">
-            <!-- 投票统计与管理 -->
-            <div class="mb-6">
-                <h3 class="text-xl font-semibold mb-3">投票统计与管理</h3>
+            <hr class="my-6 border-green-200">
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4"><i class="fas fa-tasks mr-2"></i>投票统计与管理</h3>
                 <div id="admin-vote-list" class="space-y-2">
-                    <!-- 管理员投票列表 -->
                 </div>
             </div>
-            <hr class="my-6">
-            <!-- 用户管理 -->
-            <div class="mb-6">
-                <h3 class="text-xl font-semibold mb-3">用户管理</h3>
+            <hr class="my-6 border-green-200">
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4"><i class="fas fa-users-cog mr-2"></i>用户管理</h3>
                 <div id="user-list" class="space-y-2">
-                    <!-- 用户列表 -->
                 </div>
             </div>
-            <hr class="my-6">
-            <!-- IP白名单管理 -->
+            <hr class="my-6 border-green-200">
             <div>
-                <h3 class="text-xl font-semibold mb-3">IP白名单管理</h3>
-                <form id="add-ip-form" class="flex items-center space-x-2 mb-3">
+                <h3 class="text-xl font-semibold mb-4"><i class="fas fa-network-wired mr-2"></i>IP白名单管理</h3>
+                <form id="add-ip-form" class="flex items-center space-x-2 mb-4">
                     <input id="ip-address" type="text" placeholder="输入IP地址" class="input-field">
-                    <button type="submit" class="btn btn-primary whitespace-nowrap">添加IP</button>
+                    <button type="submit" class="btn btn-primary whitespace-nowrap">
+                        <i class="fas fa-plus"></i>添加IP
+                    </button>
                 </form>
-                <div id="ip-list" class="space-y-1">
-                    <!-- IP列表 -->
+                <div id="ip-list" class="space-y-1 bg-white p-3 rounded-lg">
                 </div>
             </div>
         </div>
@@ -137,11 +250,11 @@
 
     function showMessage(text, isError = false) {
         messageArea.textContent = text;
-        messageArea.className = 'p-4 mb-4 text-sm rounded-lg'; // Reset classes
+        messageArea.className = 'p-4 mb-6 text-sm rounded-lg'; // Reset classes
         if (isError) {
-            messageArea.classList.add('text-red-700', 'bg-red-100');
+            messageArea.classList.add('text-red-800', 'bg-red-100', 'border-l-4', 'border-red-500');
         } else {
-            messageArea.classList.add('text-blue-700', 'bg-blue-100');
+            messageArea.classList.add('text-green-800', 'bg-green-100', 'border-l-4', 'border-green-500');
         }
         messageArea.classList.remove('hidden');
         setTimeout(() => messageArea.classList.add('hidden'), 5000);
@@ -158,43 +271,46 @@
         if (!response.ok) {
             const errorText = await response.text();
             throw new Error(errorText || `HTTP error! status:${response.status}`);
-            }
-            const contentType = response.headers.get("content-type");
-            if (contentType && contentType.indexOf("application/json") !== -1) {
-                return response.json();
-            } else {
-                return response.text();
-            }
         }
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+            return response.json();
+        } else {
+            return response.text();
+        }
+    }
 
-        // --- 渲染函数 ---
+    // --- 渲染函数 ---
     function renderVoteList(votes) {
         const voteList = document.getElementById('vote-list');
         voteList.innerHTML = '';
         if (!votes || votes.length === 0) {
-            voteList.innerHTML = '<p>当前没有投票活动。</p>';
+            voteList.innerHTML = '<p class="text-center text-gray-500 py-4">当前没有投票活动。</p>';
             return;
         }
         votes.forEach(vote => {
             const isVotingActive = new Date() > new Date(vote.startTime) && new Date() < new Date(vote.endTime);
-
-            // 判断当前用户是否是可执行操作的角色 (USER或ADMIN), 而非游客
             const isActionUser = state.currentUser && state.roles.includes('ROLE_USER');
-
             const voteCard = document.createElement('div');
-            voteCard.className = 'p-4 border rounded-lg';
-            // 使用 isActionUser 变量来控制按钮的 disabled 状态和样式
+            voteCard.className = 'p-5 border rounded-lg bg-gray-50 hover:shadow-lg transition-shadow';
             voteCard.innerHTML =`
                     <div class="flex justify-between items-start">
                         <div>
-                            <h4 class="font-bold text-lg">${vote.title}</h4>
-                            <p class="text-sm text-gray-600">${vote.description || ''}</p>
-                            <p class="text-xs text-gray-500">创建者: ${vote.creator} | 票数: ${vote.voteCount}</p>
-                            <p class="text-xs text-gray-500">时间: ${new Date(vote.startTime).toLocaleString()} - ${new Date(vote.endTime).toLocaleString()}</p>
+                            <h4 class="font-bold text-lg text-green-800">${vote.title}</h4>
+                            <p class="text-sm text-gray-600 mt-1">${vote.description || ''}</p>
+                            <div class="text-xs text-gray-500 mt-2 space-y-1">
+                                <p><i class="fas fa-user-edit mr-1"></i>创建者: ${vote.creator}</p>
+                                <p><i class="fas fa-poll mr-1"></i>票数: ${vote.voteCount}</p>
+                                <p><i class="fas fa-clock mr-1"></i>时间: ${new Date(vote.startTime).toLocaleString()} - ${new Date(vote.endTime).toLocaleString()}</p>
+                            </div>
                         </div>
-                        <div class="flex space-x-2">
-                            <button class="btn btn-primary ${!isVotingActive || !isActionUser ? 'opacity-50 cursor-not-allowed' : ''}" ${!isVotingActive || !isActionUser ? 'disabled' : ''} onclick="castVote(${vote.id})">投票</button>
-                            <button class="btn btn-secondary ${!isActionUser ? 'opacity-50 cursor-not-allowed' : ''}" ${!isActionUser ? 'disabled' : ''} onclick="shareVote(${vote.id})">分享</button>
+                        <div class="flex flex-col space-y-2">
+                             <button class="btn btn-primary ${!isVotingActive || !isActionUser ? 'opacity-50 cursor-not-allowed' : ''}" ${!isVotingActive || !isActionUser ? 'disabled' : ''} onclick="castVote(${vote.id})">
+                                <i class="fas fa-vote-yea"></i>投票
+                            </button>
+                            <button class="btn btn-secondary ${!isActionUser ? 'opacity-50 cursor-not-allowed' : ''}" ${!isActionUser ? 'disabled' : ''} onclick="shareVote(${vote.id})">
+                                <i class="fas fa-share-alt"></i>分享
+                            </button>
                         </div>
                     </div>
                 `;
@@ -202,254 +318,263 @@
         });
     }
 
-        function renderAdminVoteList(votes) {
-            const list = document.getElementById('admin-vote-list');
-            list.innerHTML = '';
-            votes.forEach(vote => {
-                const item = document.createElement('div');
-                item.className = 'flex justify-between items-center p-2 bg-white rounded';
-                item.innerHTML =`
-                    <span>${vote.title} (ID: ${vote.id}, 票数: ${vote.voteCount})</span>
-                    <div>
-                        <input type="number" value="${vote.voteCount}" class="input-field w-20 mr-2" id="count-${vote.id}">
-                        <button class="btn btn-primary text-xs" onclick="updateVoteCount(${vote.id})">更新</button>
-                        <button class="btn btn-danger text-xs ml-2" onclick="cancelVote(${vote.id})">撤销</button>
+    function renderAdminVoteList(votes) {
+        const list = document.getElementById('admin-vote-list');
+        list.innerHTML = '';
+        votes.forEach(vote => {
+            const item = document.createElement('div');
+            item.className = 'flex justify-between items-center p-3 bg-white rounded-md shadow-sm';
+            item.innerHTML =`
+                    <span class="font-semibold">${vote.title} (ID: ${vote.id}, 票数: ${vote.voteCount})</span>
+                    <div class="flex items-center">
+                        <input type="number" value="${vote.voteCount}" class="input-field w-24 mr-2 text-center" id="count-${vote.id}">
+                        <button class="btn btn-primary text-xs" onclick="updateVoteCount(${vote.id})"><i class="fas fa-save"></i></button>
+                        <button class="btn btn-danger text-xs ml-2" onclick="cancelVote(${vote.id})"><i class="fas fa-trash-alt"></i></button>
                     </div>
                 `;
-                list.appendChild(item);
-            });
-        }
+            list.appendChild(item);
+        });
+    }
 
-        function renderUserList(users) {
-            const list = document.getElementById('user-list');
-            list.innerHTML = '';
-            users.forEach(user => {
-                const item = document.createElement('div');
-                item.className = 'flex justify-between items-center p-2 bg-white rounded';
-                item.innerHTML =`
-                    <span>${user.username} (ID: ${user.id}) - ${user.enabled ? '已启用' : '已禁用'}</span>
+    function renderUserList(users) {
+        const list = document.getElementById('user-list');
+        list.innerHTML = '';
+        users.forEach(user => {
+            const item = document.createElement('div');
+            item.className = 'flex justify-between items-center p-3 bg-white rounded-md shadow-sm';
+            item.innerHTML =`
+                    <div>
+                        <i class="fas fa-user mr-2"></i>
+                        <span class="font-semibold">${user.username} (ID: ${user.id})</span>
+                        -
+                        <span class="${user.enabled ? 'text-green-600' : 'text-red-600'}">${user.enabled ? '已启用' : '已禁用'}</span>
+                    </div>
                     <div>
                         ${user.enabled
-                            ? `<button class="btn btn-danger text-xs" onclick="disableUser(${user.id})">禁用</button>`
-                            : `<button class="btn btn-primary text-xs" onclick="enableUser(${user.id})">启用</button>`
-                        }
+                ? `<button class="btn btn-danger text-xs" onclick="disableUser(${user.id})"><i class="fas fa-user-slash"></i> 禁用</button>`
+                : `<button class="btn btn-primary text-xs" onclick="enableUser(${user.id})"><i class="fas fa-user-check"></i> 启用</button>`
+            }
                     </div>
                 `;
-                list.appendChild(item);
-            });
+            list.appendChild(item);
+        });
+    }
+
+    function renderIpList(ips) {
+        const list = document.getElementById('ip-list');
+        list.innerHTML = '';
+        if (ips.length === 0) {
+            list.innerHTML = `<p class="text-gray-500">IP 白名单为空。</p>`
+            return;
         }
+        ips.forEach(ip => {
+            const item = document.createElement('div');
+            item.className = 'p-2 bg-gray-100 rounded flex items-center';
+            item.innerHTML = `<i class="fas fa-shield-alt mr-2 text-gray-500"></i> ${ip.ipAddress}`;
+            list.appendChild(item);
+        });
+    }
 
-        function renderIpList(ips) {
-            const list = document.getElementById('ip-list');
-            list.innerHTML = '';
-            ips.forEach(ip => {
-                const item = document.createElement('div');
-                item.className = 'p-2 bg-white rounded';
-                item.textContent = ip.ipAddress;
-                list.appendChild(item);
-            });
+
+    // --- 功能函数 ---
+    async function loadAllData() {
+        await loadVoteList();
+        if (state.roles.includes('ROLE_ADMIN')) {
+            adminPanel.classList.remove('hidden');
+            await loadAdminData();
+        } else {
+            adminPanel.classList.add('hidden');
         }
+    }
 
+    async function loadVoteList() {
+        try {
+            const votes = await apiFetch('/api/votes');
+            renderVoteList(votes);
+            if(state.roles.includes('ROLE_ADMIN')) {
+                renderAdminVoteList(votes);
+            }
+        } catch (error) {
+            showMessage('加载投票列表失败: ' + error.message, true);
+        }
+    }
 
-        // --- 功能函数 ---
-        async function loadAllData() {
+    async function loadAdminData() {
+        try {
+            const users = await apiFetch('/api/admin/users');
+            renderUserList(users);
+            const ips = await apiFetch('/api/admin/ip-whitelist');
+            renderIpList(ips);
+        } catch(error) {
+            showMessage('加载管理员数据失败: ' + error.message, true);
+        }
+    }
+
+    window.castVote = async (voteId) => {
+        try {
+            const result = await apiFetch(`/api/votes/${voteId}/vote`, { method: 'POST' });
+            showMessage(result);
             await loadVoteList();
-            if (state.roles.includes('ROLE_ADMIN')) {
-                adminPanel.classList.remove('hidden');
-                await loadAdminData();
-            } else {
-                adminPanel.classList.add('hidden');
-            }
+        } catch (error) {
+            showMessage('投票失败: ' + error.message, true);
         }
+    };
 
-        async function loadVoteList() {
-            try {
-                const votes = await apiFetch('/api/votes');
-                renderVoteList(votes);
-                if(state.roles.includes('ROLE_ADMIN')) {
-                    renderAdminVoteList(votes);
-                }
-            } catch (error) {
-                showMessage('加载投票列表失败: ' + error.message, true);
-            }
+    window.shareVote = async (voteId) => {
+        try {
+            const link = await apiFetch(`/api/votes/${voteId}/share`);
+            await navigator.clipboard.writeText(link);
+            showMessage('分享链接已复制到剪贴板!');
+        } catch (error) {
+            showMessage('获取分享链接失败: ' + error.message, true);
         }
+    };
 
-        async function loadAdminData() {
-            try {
-                 const users = await apiFetch('/api/admin/users');
-                 renderUserList(users);
-                 const ips = await apiFetch('/api/admin/ip-whitelist');
-                 renderIpList(ips);
-            } catch(error) {
-                showMessage('加载管理员数据失败: ' + error.message, true);
-            }
+    window.updateVoteCount = async (voteId) => {
+        const count = document.getElementById(`count-${voteId}`).value;
+        try {
+            await apiFetch(`/api/admin/votes/${voteId}/count?count=${count}`, { method: 'PUT' });
+            showMessage('票数更新成功!');
+            await loadVoteList();
+        } catch (error) {
+            showMessage('更新票数失败: ' + error.message, true);
         }
+    };
 
-        window.castVote = async (voteId) => {
-            try {
-                const result = await apiFetch(`/api/votes/${voteId}/vote`, { method: 'POST' });
-                showMessage(result);
-                await loadVoteList();
-            } catch (error) {
-                showMessage('投票失败: ' + error.message, true);
-            }
-        };
+    window.cancelVote = async (voteId) => {
+        if (!confirm('确定要撤销这个投票吗?')) return;
+        try {
+            const result = await apiFetch(`/api/admin/votes/${voteId}`, { method: 'DELETE' });
+            showMessage(result);
+            await loadVoteList();
+        } catch (error) {
+            showMessage('撤销投票失败: ' + error.message, true);
+        }
+    };
 
-        window.shareVote = async (voteId) => {
-            try {
-                const link = await apiFetch(`/api/votes/${voteId}/share`);
-                await navigator.clipboard.writeText(link);
-                showMessage('分享链接已复制到剪贴板!');
-            } catch (error) {
-                showMessage('获取分享链接失败: ' + error.message, true);
-            }
-        };
+    window.disableUser = async (userId) => {
+        try {
+            await apiFetch(`/api/admin/users/${userId}/disable`, { method: 'PUT' });
+            showMessage('用户已禁用');
+            await loadAdminData();
+        } catch (error) {
+            showMessage('禁用用户失败: ' + error.message, true);
+        }
+    };
 
-        window.updateVoteCount = async (voteId) => {
-            const count = document.getElementById(`count-${voteId}`).value;
-            try {
-                await apiFetch(`/api/admin/votes/${voteId}/count?count=${count}`, { method: 'PUT' });
-                showMessage('票数更新成功!');
-                await loadVoteList();
-            } catch (error) {
-                showMessage('更新票数失败: ' + error.message, true);
-            }
-        };
-
-        window.cancelVote = async (voteId) => {
-            if (!confirm('确定要撤销这个投票吗?')) return;
-            try {
-                const result = await apiFetch(`/api/admin/votes/${voteId}`, { method: 'DELETE' });
-                showMessage(result);
-                await loadVoteList();
-            } catch (error) {
-                showMessage('撤销投票失败: ' + error.message, true);
-            }
-        };
-
-        window.disableUser = async (userId) => {
-             try {
-                await apiFetch(`/api/admin/users/${userId}/disable`, { method: 'PUT' });
-                showMessage('用户已禁用');
-                await loadAdminData();
-            } catch (error) {
-                showMessage('禁用用户失败: ' + error.message, true);
-            }
-        };
-
-        window.enableUser = async (userId) => {
-            try {
-                await apiFetch(`/api/admin/users/${userId}/enable`, { method: 'PUT' });
-                showMessage('用户已启用');
-                await loadAdminData();
-            } catch (error) {
-                showMessage('启用用户失败: ' + error.message, true);
-            }
-        };
+    window.enableUser = async (userId) => {
+        try {
+            await apiFetch(`/api/admin/users/${userId}/enable`, { method: 'PUT' });
+            showMessage('用户已启用');
+            await loadAdminData();
+        } catch (error) {
+            showMessage('启用用户失败: ' + error.message, true);
+        }
+    };
 
 
-        // --- 事件监听 ---
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const formData = new URLSearchParams();
-            formData.append('username', username);
-            formData.append('password', password);
+    // --- 事件监听 ---
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const formData = new URLSearchParams();
+        formData.append('username', username);
+        formData.append('password', password);
 
-            try {
-                const response = await fetch('/api/login', {
-                    method: 'POST',
-                    body: formData,
-                });
-                if (response.ok) {
-                    showMessage('登录成功!');
-                    const principal = await apiFetch('/api/users/me');
-                    state.currentUser = principal.name;
-                    state.roles = principal.authorities.map(a => a.authority);
-                    document.getElementById('current-user').textContent = state.currentUser;
-                    showView('app');
-                    await loadAllData();
-                } else {
-                    throw new Error('用户名或密码错误。');
-                }
-            } catch (error) {
-                showMessage('登录失败: ' + error.message, true);
-            }
-        });
-
-        document.getElementById('logout-btn').addEventListener('click', async () => {
-            try {
-                await fetch('/api/logout', { method: 'POST' });
-                state.currentUser = null;
-                state.roles = [];
-                document.getElementById('login-form').reset();
-                showView('login');
-                await loadVoteList(); // Refresh vote list for visitor view
-                showMessage('已成功退出登录。');
-            } catch (error) {
-                showMessage('退出登录失败: ' + error.message, true);
-            }
-        });
-
-        document.getElementById('create-vote-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const vote = {
-                title: document.getElementById('vote-title').value,
-                description: document.getElementById('vote-description').value,
-                startTime: document.getElementById('vote-start-time').value,
-                endTime: document.getElementById('vote-end-time').value,
-            };
-            try {
-                await apiFetch('/api/admin/votes', {
-                    method: 'POST',
-                    body: JSON.stringify(vote),
-                });
-                showMessage('投票创建成功!');
-                document.getElementById('create-vote-form').reset();
-                await loadVoteList();
-            } catch (error) {
-                showMessage('创建投票失败: ' + error.message, true);
-            }
-        });
-
-        document.getElementById('add-ip-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const ip = document.getElementById('ip-address').value;
-            try {
-                await apiFetch(`/api/admin/ip-whitelist?ip=${ip}`, { method: 'POST' });
-                showMessage('IP添加成功!');
-                document.getElementById('ip-address').value = '';
-                await loadAdminData();
-            } catch (error) {
-                showMessage('添加IP失败: ' + error.message, true);
-            }
-        });
-
-        // --- 初始化 ---
-        async function initialLoad() {
-            try {
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                body: formData,
+            });
+            if (response.ok) {
+                showMessage('登录成功!');
                 const principal = await apiFetch('/api/users/me');
-                if (principal) {
-                    state.currentUser = principal.name;
-                    state.roles = principal.authorities.map(a => a.authority);
-                    document.getElementById('current-user').textContent = state.currentUser;
-                    showView('app');
-                    await loadAllData();
-                } else {
-                     throw new Error("Not logged in");
-                }
-            } catch (e) {
-                // Not logged in
-                state.currentUser = null;
-                state.roles = [];
-                showView('login');
-                await loadVoteList(); // Load votes for visitors
+                state.currentUser = principal.name;
+                state.roles = principal.authorities.map(a => a.authority);
+                document.getElementById('current-user').textContent = state.currentUser;
+                showView('app');
+                await loadAllData();
+            } else {
+                throw new Error('用户名或密码错误。');
             }
+        } catch (error) {
+            showMessage('登录失败: ' + error.message, true);
         }
+    });
 
-        document.addEventListener('DOMContentLoaded', initialLoad);
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+        try {
+            await fetch('/api/logout', { method: 'POST' });
+            state.currentUser = null;
+            state.roles = [];
+            document.getElementById('login-form').reset();
+            showView('login');
+            await loadVoteList(); // Refresh vote list for visitor view
+            showMessage('已成功退出登录。');
+        } catch (error) {
+            showMessage('退出登录失败: ' + error.message, true);
+        }
+    });
 
-    </script>
+    document.getElementById('create-vote-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const vote = {
+            title: document.getElementById('vote-title').value,
+            description: document.getElementById('vote-description').value,
+            startTime: document.getElementById('vote-start-time').value,
+            endTime: document.getElementById('vote-end-time').value,
+        };
+        try {
+            await apiFetch('/api/admin/votes', {
+                method: 'POST',
+                body: JSON.stringify(vote),
+            });
+            showMessage('投票创建成功!');
+            document.getElementById('create-vote-form').reset();
+            await loadVoteList();
+        } catch (error) {
+            showMessage('创建投票失败: ' + error.message, true);
+        }
+    });
+
+    document.getElementById('add-ip-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const ip = document.getElementById('ip-address').value;
+        try {
+            await apiFetch(`/api/admin/ip-whitelist?ip=${ip}`, { method: 'POST' });
+            showMessage('IP添加成功!');
+            document.getElementById('ip-address').value = '';
+            await loadAdminData();
+        } catch (error) {
+            showMessage('添加IP失败: ' + error.message, true);
+        }
+    });
+
+    // --- 初始化 ---
+    async function initialLoad() {
+        try {
+            const principal = await apiFetch('/api/users/me');
+            if (principal) {
+                state.currentUser = principal.name;
+                state.roles = principal.authorities.map(a => a.authority);
+                document.getElementById('current-user').textContent = state.currentUser;
+                showView('app');
+                await loadAllData();
+            } else {
+                throw new Error("Not logged in");
+            }
+        } catch (e) {
+            // Not logged in
+            state.currentUser = null;
+            state.roles = [];
+            showView('login');
+            await loadVoteList(); // Load votes for visitors
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initialLoad);
+
+</script>
 </body>
 </html>
