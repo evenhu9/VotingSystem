@@ -34,8 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 禁用 CSRF（方便 API 测试）
                 .csrf().disable()
                 .authorizeRequests()
-                // 公共接口
-                .antMatchers("/api/login", "/h2-console/**", "/index.html").permitAll()
+                // 公共接口 (关键修改：添加了根路径"/")
+                .antMatchers("/", "/api/login", "/h2-console/**", "/index.html").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/votes/**").permitAll()
                 // 用户接口
                 .antMatchers(HttpMethod.POST, "/api/votes/**").hasRole("USER")

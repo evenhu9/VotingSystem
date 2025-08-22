@@ -2,6 +2,8 @@ package com.example.votingsystem.controller;
 
 import com.example.votingsystem.aop.AdminOnly;
 import com.example.votingsystem.dto.VoteCreateDto;
+import com.example.votingsystem.entity.User; // 导入 User 实体
+import com.example.votingsystem.repository.UserRepository; // 导入 UserRepository
 import com.example.votingsystem.service.IpWhitelistService;
 import com.example.votingsystem.service.UserService;
 import com.example.votingsystem.service.VoteService;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List; // 导入 List
 
 @RestController
 @RequestMapping("/api/admin")
@@ -17,11 +20,14 @@ public class AdminController {
     private final VoteService voteService;
     private final UserService userService;
     private final IpWhitelistService ipWhitelistService;
+    private final UserRepository userRepository; // 新增 UserRepository 依赖
 
-    public AdminController(VoteService voteService, UserService userService, IpWhitelistService ipWhitelistService) {
+    // 修改构造函数以注入 UserRepository
+    public AdminController(VoteService voteService, UserService userService, IpWhitelistService ipWhitelistService, UserRepository userRepository) {
         this.voteService = voteService;
         this.userService = userService;
         this.ipWhitelistService = ipWhitelistService;
+        this.userRepository = userRepository; // 初始化
     }
 
     // --- Vote Management ---
@@ -63,6 +69,16 @@ public class AdminController {
     }
 
     // --- User Management ---
+
+    /**
+     * 新增：获取所有用户列表的接口
+     */
+    @GetMapping("/users")
+    @AdminOnly
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(userRepository.findAll());
+    }
+
     @PutMapping("/users/{id}/disable")
     @AdminOnly
     public ResponseEntity<?> disableUser(@PathVariable Long id) {
