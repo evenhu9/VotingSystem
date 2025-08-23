@@ -75,8 +75,7 @@ public class DataInitializer implements CommandLineRunner {
         logger.warn("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         logger.warn("!!! 初始账户已创建 - 请妥善保管以下凭证 !!!");
         logger.warn("!!! 用户名: {}", username);
-        logger.warn("!!! 初始密码: {}", password);
-        logger.warn("!!! 请在首次登录后立即修改密码 !!!");
+        logger.warn("!!! 密码: {}", password);
         logger.warn("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 }

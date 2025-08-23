@@ -325,7 +325,7 @@
             const item = document.createElement('div');
             item.className = 'flex justify-between items-center p-3 bg-white rounded-md shadow-sm';
             item.innerHTML =`
-                    <span class="font-semibold">${vote.title} (ID: ${vote.id}, 票数: ${vote.voteCount})</span>
+                    <span class="font-semibold">${vote.title} (票数: ${vote.voteCount})</span>
                     <div class="flex items-center">
                         <input type="number" value="${vote.voteCount}" class="input-field w-24 mr-2 text-center" id="count-${vote.id}">
                         <button class="btn btn-primary text-xs" onclick="updateVoteCount(${vote.id})"><i class="fas fa-save"></i></button>
@@ -345,7 +345,7 @@
             item.innerHTML =`
                     <div>
                         <i class="fas fa-user mr-2"></i>
-                        <span class="font-semibold">${user.username} (ID: ${user.id})</span>
+                        <span class="font-semibold">${user.username}</span>
                         -
                         <span class="${user.enabled ? 'text-green-600' : 'text-red-600'}">${user.enabled ? '已启用' : '已禁用'}</span>
                     </div>
@@ -374,7 +374,6 @@
             list.appendChild(item);
         });
     }
-
 
     // --- 功能函数 ---
     async function loadAllData() {
